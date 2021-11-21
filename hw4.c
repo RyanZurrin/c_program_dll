@@ -19,10 +19,10 @@
 // *print_double
 // *print_char
 // *print_int
-#define PRINT_TYPE print_char // set to type you will be printing
+#define PRINT_TYPE print_int // set to type you will be printing
 // set T to the type of data you will be  reading in
-#define T char // change data type (should match print type)
-#define IN_TYPE " %c" // define the format specifier to use in scanf
+#define T int // change data type (should match print type)
+#define IN_TYPE " %d" // define the format specifier to use in scanf
 //___________________________End Type specification____________________________
 // ______________________structures to be used in program______________________
 // node structure to hold data and pointer to next node and previous node______
@@ -45,11 +45,9 @@ struct LIST *initialize_list(void (*p)(struct NODE *));
 void insert_front(T element, struct LIST **l);
 void insert_back(T element, struct LIST **l);
 void insert_element(T element, struct LIST **l);
-
+void insert_at_index(T element, int index, struct LIST **l);
 __attribute__((unused)) void removeNodeAtIndex(struct LIST**, int);
-
 __attribute__((unused)) int removeNodeByKey(struct LIST**, T);
-
 __attribute__((unused)) int getKeyCount(struct LIST**, T);
 __attribute__((unused)) void print_float(struct NODE*);
 __attribute__((unused)) void print_double(struct NODE*);
@@ -82,22 +80,6 @@ int main() {
     print_list(&l);
     printf("\n");
     print_list_reversed(&l);
-    printf("\n");
-    removeNodeAtIndex(&l, 2);
-    print_list(&l);
-    printf("\n");
-    print_list_reversed(&l);
-    printf("\n");
-    removeNodeByKey(&l, 't');
-    print_list(&l);
-    printf("\n");
-    print_list_reversed(&l);
-    printf("\n");
-    removeNodeByKey(&l, 'c');
-    print_list(&l);
-    printf("\n");
-    print_list_reversed(&l);
-    printf("\nthe key e was found %d times\n", getKeyCount(&l, 'e'));
     free_list(l);
     l = NULL;
     return 0;
@@ -184,6 +166,27 @@ void insert_element(T element, struct LIST **l) {
     current->prev = n;
     n->next = current;
 } // end insert_element
+
+void insert_at_index(T element, int index, struct LIST **l) {
+    if (index == 0) {
+        insert_front(element, l);
+        return;
+    }
+    if (index == (*l)->count) {
+        insert_back(element, l);
+        return;
+    }
+    struct NODE* n = initialize_node(element);
+    struct NODE* current = (*l)->first;
+    for (int i = 0; i < index; i++) {
+        current = current->next;
+    }
+    (current->prev)->next = n;
+    n->prev = current->prev;
+    current->prev = n;
+    n->next = current;
+    (*l)->count += 1;
+}
 
 // removes the node at the given index
 __attribute__((unused)) void removeNodeAtIndex(struct LIST** l, int index) {
