@@ -120,6 +120,7 @@ int main() {
     struct LIST* l = initialize_list(PRINT_TYPE);
     T val;
 
+    int toRemove= 0;
     if (IN_TYPE == " %c") {
         while((val = (T)getchar()) != EOF) {
             insert_back(val, &l);
@@ -128,38 +129,14 @@ int main() {
     } else {
         int size = 0;
         scanf("%d", &size);
-        size++;
         for (int i = 0; i < size; i++) {
             scanf(IN_TYPE, &val);
-            insert_element_ascending(val, &l);
+            insert_back(val, &l);
         }
     }
-    int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    scanf("%d", &toRemove);
+    remove_all_nodes_by_key(l, toRemove);
     print_list(&l);
-    printf("\n");
-    print_list_reversed(&l);
-    printf("\n");
-    printf("first index of 15 is %d\n", get_first_index_of_key(&l, 15));
-    printf("last index of 15 is %d\n", get_last_index_of_key(&l, 15));
-    modify_element_at_index(15, 3, &l);
-    printf("\n");
-    print_list(&l);
-    printf("\n");
-    print_list_reversed(&l);
-    printf("\n");
-    make_list_empty(&l);
-    insert_element_ascending(1, &l);
-    insert_element_ascending(2, &l);
-    insert_element_ascending(3, &l);
-    print_list(&l);
-    printf("\n");
-    print_list_reversed(&l);
-    printf("\n");
-    insert_elements_starting_at_index(arr, 10, 1, &l);
-    print_list(&l);
-    printf("\n");
-    print_list_reversed(&l);
-    printf("\n");
     free_list(l);
     l = NULL;
     return 0;
